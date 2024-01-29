@@ -1,61 +1,43 @@
 class PairGenerator
-  def pair(people, seed)
-      primary_group = people.clone
-      secondary_group = people.clone
+  LIST_START = 0
+  LIST_END = -1
+  OFFSET = 1
 
-      (seed + 1).times do
-        secondary_group.push(secondary_group.shift)
-      end
+  def pair(given_people, seed)
+    people = given_people.sort
 
-      edge = nil
-      result = []
-      already_included = Set.new
+    # people.push(nil) if people.size.odd?
 
-      # p '******'
-      # p primary_group
-      # p '------------'
-      # p secondary_group
-      # p '******'
+    fixed_person = people.shift
+    seed.times { people.push(people.shift) }
+    people.unshift(fixed_person)
 
+    first_group = generate_first_group(people)
+    second_group = generate_second_group(people)
+    result = []
 
-      while primary_group.any?
-
-        edge = toggle(edge)
-
-        if seed.odd? && primary_group.size == 2
-          first_person = primary_group.pop
-          second_person = secondary_group.shift
-        else
-          first_person = primary_group.send(edge)
-          second_person = secondary_group.send(edge)
-        end
-
-        thing = {
-          first_person: first_person,
-          second_person: second_person,
-        }
-
-        p thing
-
-
-
-        next if already_included.include?(first_person) || already_included.include?(second_person)
-
-        result.push(::Set.new([first_person, second_person]))
-        already_included.add(first_person)
-        already_included.add(second_person)
-      end
-
-      result
+    while first_group.any? do
+      result.push(Set.new([first_group.shift, second_group.shift]))
     end
 
-    private
-
-    def toggle(edge)
-      if edge == :shift
-        return :pop
-      end
-
-      :shift
-    end
+    return result
   end
+
+  private
+
+  def generate_first_group(people)
+    midlist = calculate_midlist(people)
+
+    people.slice(LIST_START..(midlist - OFFSET))
+  end
+
+  def generate_second_group(people)
+    midlist = calculate_midlist(people)
+
+    people.slice(midlist..LIST_END).reverse
+  end
+
+  def calculate_midlist(people)
+    people.size / 2
+  end
+end

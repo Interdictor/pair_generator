@@ -17,7 +17,7 @@ USER $USERNAME
 
 COPY --chown=$USERNAME:$USERNAME Gemfile* $WORKPATH
 
-CMD ["rspec"]
+CMD ["ruby", "src/main.rb"]
 
 RUN bundle install
 COPY --chown=$USERNAME:$USERNAME . $WORKPATH
