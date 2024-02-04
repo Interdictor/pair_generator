@@ -1,4 +1,4 @@
-name: Ruby CI
+name: test_pipeline
 
 on:
   push:
@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: checkout
         uses: actions/checkout@v2
 
-      - name: Set up Ruby
+      - name: set ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
 
-      - name: Install dependencies
+      - name: install
         run: |
           gem install bundler
           bundle install --jobs 1 --retry 2
 
-      - name: Run Tests
+      - name: test
         run: bundle exec rspec
