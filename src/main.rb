@@ -1,11 +1,10 @@
 require_relative './round_robin_pair_generator'
 
-throw 'SEED env variable is required' if !ENV['SEED']
-throw 'PEOPLE env variable is required' if !ENV['PEOPLE']
+raw_seed = ENV.fetch('SEED') { |arg| raise "Undefined #{arg} env variable"}
+raw_people = ENV.fetch('PEOPLE') { |arg| raise "Undefined #{arg} env variable"}
 
-seed = ENV['SEED'].to_i
-people = ENV['PEOPLE'].split(';')
-
+seed = raw_seed.to_i
+people = raw_people.split('|')
 
 result = RoundRobinPairGenerator.new.pair(people, seed)
 

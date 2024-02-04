@@ -50,6 +50,11 @@ class RoundRobinPairGenerator
   end
 
   def validate_seed!(seed)
-    raise InvalidSeedError if (seed.class != Integer) || (seed < 0)
+    if (seed.class != Integer) || (seed < 0)
+      raise InvalidSeedError.new(
+        "#{seed.inspect} class: #{seed.class} given as seed." \
+        " Must be a positive integer instead."
+      )
+    end
   end
 end

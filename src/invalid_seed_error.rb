@@ -1,1 +1,1 @@
-class InvalidSeedError < RuntimeError; end
+class InvalidSeedError < StandardError; end
