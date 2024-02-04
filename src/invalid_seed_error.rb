@@ -1,0 +1,1 @@
+class InvalidSeedError < RuntimeError; end

@@ -1,12 +1,15 @@
+require_relative './invalid_seed_error'
+
 class PairGenerator
   LIST_START = 0
   LIST_END = -1
   OFFSET = 1
 
-  def pair(given_people, seed)
+  def pair(given_people, given_seed)
+    validate_seed!(given_seed)
     people = given_people.sort
-
-    # people.push(nil) if people.size.odd?
+    people.push(nil) if people.size.odd?
+    seed = modularize_seed(given_seed, people)
 
     fixed_person = people.shift
     seed.times { people.push(people.shift) }
@@ -16,7 +19,7 @@ class PairGenerator
     second_group = generate_second_group(people)
     result = []
 
-    while first_group.any? do
+    first_group.size.times do
       result.push(Set.new([first_group.shift, second_group.shift]))
     end
 
@@ -39,5 +42,14 @@ class PairGenerator
 
   def calculate_midlist(people)
     people.size / 2
+  end
+
+  def modularize_seed(seed, people)
+    posible_combinations = people.size - 1
+    seed % posible_combinations
+  end
+
+  def validate_seed!(seed)
+    raise InvalidSeedError if (seed.class != Integer) || (seed < 0)
   end
 end

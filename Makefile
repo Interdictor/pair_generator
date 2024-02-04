@@ -1,5 +1,5 @@
 init:
-	docker compose run --rm main cp .env.example .env
+	cp example.env .env
 
 build:
 	docker compose build
