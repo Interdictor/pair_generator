@@ -1,6 +1,6 @@
 require_relative './invalid_seed_error'
 
-class PairGenerator
+class RoundRobinPairGenerator
   LIST_START = 0
   LIST_END = -1
   OFFSET = 1

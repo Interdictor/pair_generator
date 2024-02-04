@@ -1,11 +1,11 @@
-require_relative '../src/pair_generator'
+require_relative '../src/round_robin_pair_generator'
 
-RSpec.describe PairGenerator do
+RSpec.describe RoundRobinPairGenerator do
   context 'given only two people' do
     people = ['a', 'b']
 
     it 'generates a pair from a seed' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
       seed = 0
 
       pair = generator.pair(people, seed)
@@ -15,7 +15,7 @@ RSpec.describe PairGenerator do
     end
 
     it 'generates the same pair ignoring the seed' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       cases = {
         0 => [Set.new(['a', 'b'])],
@@ -32,7 +32,7 @@ RSpec.describe PairGenerator do
 
     it 'raises a InvalidSeedError for floats' do
       seed = 0.1
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       expect { generator.pair(people, seed) }.to(
         raise_exception(InvalidSeedError)
@@ -41,7 +41,7 @@ RSpec.describe PairGenerator do
 
     it 'raises a InvalidSeedError for negative numbers' do
       seed = -1
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       expect { generator.pair(people, seed) }.to(
         raise_exception(InvalidSeedError)
@@ -53,7 +53,7 @@ RSpec.describe PairGenerator do
     people = ['a', 'b', 'c', 'd']
 
     it 'generates three different combinations' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       cases = {
         0 => [Set.new(['a', 'd']), Set.new(['b', 'c'])],
@@ -65,7 +65,7 @@ RSpec.describe PairGenerator do
     end
 
     it 'generates the same pairs for an equivalent seed' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
       first_seed = 0
       second_seed = 3
 
@@ -81,7 +81,7 @@ RSpec.describe PairGenerator do
     people = ['a', 'b', 'c', 'd', 'e', 'f']
 
     it 'generates five different combinations' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       cases = {
         0 => [Set.new(['a', 'f']), Set.new(['b', 'e']), Set.new(['c', 'd'])],
@@ -100,7 +100,7 @@ RSpec.describe PairGenerator do
     people = ['a', 'b', 'c']
 
     it 'adds a null person to the combination' do
-      generator = PairGenerator.new
+      generator = RoundRobinPairGenerator.new
 
       cases = {
         0 => [Set.new(['a', nil]), Set.new(['b', 'c'])],
